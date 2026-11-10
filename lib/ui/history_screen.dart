@@ -1,9 +1,21 @@
 import 'package:flutter/material.dart';
 import 'scan_guide.dart';
 import 'home_screen.dart';
+import 'profile_screen.dart';
 
 class HistoryScreen extends StatefulWidget {
-  HistoryScreen({super.key});
+  final String userName;
+  final String userEmail;
+  final String age;
+  final String gender;
+
+  HistoryScreen({
+    super.key,
+    this.userName = "Pengguna",
+    this.userEmail = "email@domain.com",
+    this.age = "-",
+    this.gender = "-",
+  });
 
   @override
   State<HistoryScreen> createState() => _HistoryScreenState();
@@ -203,12 +215,33 @@ class _HistoryScreenState extends State<HistoryScreen> {
             if (index == 0) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                    userName: widget.userName,
+                    userEmail: widget.userEmail,
+                    age: widget.age,
+                    gender: widget.gender,
+                  ),
+                ),
               );
             } else if (index == 1) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ScanGuideScreen()),
+                MaterialPageRoute(
+                  builder: (context) => ScanGuideScreen(userName: widget.userName),
+                ),
+              );
+            } else if (index == 3) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(
+                    userName: widget.userName,
+                    userEmail: widget.userEmail,
+                    age: widget.age,
+                    gender: widget.gender,
+                  ),
+                ),
               );
             }
           },

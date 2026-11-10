@@ -166,19 +166,23 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                     onPressed: () {
                       if (_formKey.currentState != null && _formKey.currentState!.validate()) {
-                        // Mengambil nama awal dari email (sebelum karakter @)
-                        String derivedName = _emailController.text.split('@').first;
+                        String inputEmail = _emailController.text.trim();
+                        
+                        // Ekstrak nama sebelum karakter @
+                        String derivedName = inputEmail.split('@').first;
                         if (derivedName.isNotEmpty) {
                           derivedName = derivedName[0].toUpperCase() + derivedName.substring(1);
                         } else {
                           derivedName = "Pengguna";
                         }
 
+                        // Kirimkan userName DAN userEmail ke HomeScreen
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
                             builder: (context) => HomeScreen(
                               userName: derivedName,
+                              userEmail: inputEmail,
                             ),
                           ),
                         );

@@ -3,7 +3,13 @@ import 'home_screen.dart';
 
 class ProfileSetupScreen extends StatefulWidget {
   final String userName;
-  ProfileSetupScreen({super.key, this.userName = "Pengguna"});
+  final String email;
+
+  ProfileSetupScreen({
+    super.key, 
+    this.userName = "Pengguna",
+    this.email = "email@domain.com",
+  });
 
   @override
   State<ProfileSetupScreen> createState() => _ProfileSetupScreenState();
@@ -12,6 +18,7 @@ class ProfileSetupScreen extends StatefulWidget {
 class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   String selectedGender = "Perempuan";
   late TextEditingController _nameController;
+  final TextEditingController _ageController = TextEditingController();
 
   @override
   void initState() {
@@ -22,6 +29,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
   @override
   void dispose() {
     _nameController.dispose();
+    _ageController.dispose();
     super.dispose();
   }
 
@@ -92,6 +100,7 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
               ),
               SizedBox(height: 8),
               TextField(
+                controller: _ageController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   hintText: "cth. 21",
@@ -166,12 +175,19 @@ class _ProfileSetupScreenState extends State<ProfileSetupScreen> {
                     elevation: 0,
                   ),
                   onPressed: () {
-                    // Mengarahkan langsung ke Beranda dan menghapus tumpukan riwayat halaman sebelumnya
+                    String inputAge = _ageController.text.trim();
+                    if (inputAge.isEmpty) {
+                      inputAge = "-";
+                    }
+
                     Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(
                         builder: (context) => HomeScreen(
                           userName: _nameController.text.trim(),
+                          userEmail: widget.email,
+                          age: inputAge,
+                          gender: selectedGender,
                         ),
                       ),
                       (route) => false,

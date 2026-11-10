@@ -12,7 +12,17 @@ import 'profile_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   final String userName;
-  HomeScreen({super.key, this.userName = "Pengguna"});
+  final String userEmail;
+  final String age;
+  final String gender;
+
+  HomeScreen({
+    super.key, 
+    this.userName = "Pengguna",
+    this.userEmail = "email@domain.com",
+    this.age = "-",
+    this.gender = "-",
+  });
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -250,7 +260,14 @@ class _HomeScreenState extends State<HomeScreen> {
             } else if (index == 3) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ProfileScreen()),
+                MaterialPageRoute(
+                  builder: (context) => ProfileScreen(
+                    userName: widget.userName,
+                    userEmail: widget.userEmail,
+                    age: widget.age,
+                    gender: widget.gender,
+                  ),
+                ),
               );
             }
           },

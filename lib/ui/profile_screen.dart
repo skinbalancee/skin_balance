@@ -5,7 +5,18 @@ import 'home_screen.dart';
 import 'login.dart';
 
 class ProfileScreen extends StatefulWidget {
-  ProfileScreen({super.key});
+  final String userName;
+  final String userEmail;
+  final String age;
+  final String gender;
+
+  ProfileScreen({
+    super.key,
+    required this.userName,
+    required this.userEmail,
+    this.age = "-",
+    this.gender = "-",
+  });
 
   @override
   State<ProfileScreen> createState() => _ProfileScreenState();
@@ -14,7 +25,6 @@ class ProfileScreen extends StatefulWidget {
 class _ProfileScreenState extends State<ProfileScreen> {
   int _currentIndex = 3;
 
-  // Fungsi untuk menampilkan pop-up dialog konfirmasi keluar dengan urutan yang benar
   void _showLogoutDialog(BuildContext context) {
     showDialog(
       context: context,
@@ -49,7 +59,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 SizedBox(height: 24),
-                // 1. Tombol Batal
                 SizedBox(
                   width: double.infinity,
                   height: 48,
@@ -61,7 +70,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.pop(context); // Tutup dialog
+                      Navigator.pop(context);
                     },
                     child: Text(
                       "Batal",
@@ -74,13 +83,12 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                 ),
                 SizedBox(height: 12),
-                // 2. Tombol Ya, keluar 
                 SizedBox(
                   width: double.infinity,
                   height: 48,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFC0392B), // Merah
+                      backgroundColor: Color(0xFFC0392B),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(12),
                       ),
@@ -113,6 +121,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
   @override
   Widget build(BuildContext context) {
+    String initial = widget.userName.trim().isNotEmpty
+        ? widget.userName.trim()[0].toUpperCase()
+        : "U";
+
+    String displayAge = (widget.age != "-" && widget.age.isNotEmpty)
+        ? "${widget.age} tahun"
+        : "-";
+
     return Scaffold(
       backgroundColor: Color(0xFFF7F8F6),
       body: SafeArea(
@@ -151,7 +167,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                           ),
                           child: Center(
                             child: Text(
-                              "N",
+                              initial,
                               style: TextStyle(
                                 color: Colors.black87,
                                 fontSize: 24,
@@ -166,7 +182,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "[Nama]",
+                                widget.userName.isNotEmpty ? widget.userName : "Pengguna",
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
@@ -175,7 +191,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                               ),
                               SizedBox(height: 2),
                               Text(
-                                "[email]",
+                                widget.userEmail.isNotEmpty ? widget.userEmail : "email@domain.com",
                                 style: TextStyle(
                                   fontSize: 13,
                                   color: Colors.black54,
@@ -189,9 +205,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     SizedBox(height: 20),
                     Divider(height: 1, color: Color(0xFFF0F0F0)),
                     SizedBox(height: 16),
-                    _buildProfileInfoRow("Usia", "[usia] tahun"),
+                    _buildProfileInfoRow("Usia", displayAge),
                     SizedBox(height: 12),
-                    _buildProfileInfoRow("Jenis kelamin", "[gender]"),
+                    _buildProfileInfoRow("Jenis kelamin", widget.gender),
                   ],
                 ),
               ),
@@ -261,12 +277,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
             if (index == 0) {
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => HomeScreen()),
+                MaterialPageRoute(
+                  builder: (context) => HomeScreen(
+                    userName: widget.userName,
+                    userEmail: widget.userEmail,
+                    age: widget.age,
+                    gender: widget.gender,
+                  ),
+                ),
               );
             } else if (index == 1) {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => ScanGuideScreen(userName: '',)),
+                MaterialPageRoute(
+                  builder: (context) => ScanGuideScreen(userName: widget.userName),
+                ),
               );
             } else if (index == 2) {
               Navigator.push(

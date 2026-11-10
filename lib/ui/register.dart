@@ -240,6 +240,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           MaterialPageRoute(
                             builder: (context) => ProfileSetupScreen(
                               userName: _nameController.text.trim(),
+                              email: _emailController.text.trim(),
                             ),
                           ),
                         );
